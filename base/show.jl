@@ -1840,13 +1840,21 @@ function show_globalref(io::IO, ex::GlobalRef; allow_macroname=false)
     nothing
 end
 
-function show_unquoted(io::IO, ex::SlotNumber, ::Int, ::Int)
+function show_unquoted(io::IO, ex::SlotNumber, ::Int, ::Int, unstable_ssa::Union{Nothing, BitSet} = nothing)
     slotid = ex.id
     slotnames = get(io, :SOURCE_SLOTNAMES, false)
     if isa(slotnames, Vector{String}) && slotid ≤ length(slotnames)
-        print(io, slotnames[slotid])
+        if unstable_ssa != nothing
+            printstyled(io, slotnames[slotid]; color=:light_red, bold=true)
+        else
+            print(io, slotnames[slotid])
+        end
     else
-        print(io, "_", slotid)
+        if unstable_ssa != nothing
+            print(io, "_", slotid; color=:light_red, bold=true)
+        else
+            print(io, "_", slotid)
+        end
     end
 end
 

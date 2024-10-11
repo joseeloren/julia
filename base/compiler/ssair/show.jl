@@ -96,7 +96,7 @@ function print_stmt(io::IO, idx::Int, @nospecialize(stmt), used::BitSet, maxleng
     nothing
 end
 
-show_unquoted(io::IO, val::Argument, indent::Int, prec::Int) = show_unquoted(io, Core.SlotNumber(val.n), indent, prec)
+show_unquoted(io::IO, val::Argument, indent::Int, prec::Int, unstable_ssa::Union{Nothing, BitSet} = nothing) = show_unquoted(io, Core.SlotNumber(val.n), indent, prec, unstable_ssa)
 
 show_unquoted(io::IO, stmt::PhiNode, indent::Int, ::Int) = show_unquoted_phinode(io, stmt, indent, "%")
 function show_unquoted_phinode(io::IO, stmt::PhiNode, indent::Int, prefix::String, unstable_ssa::Union{Nothing, BitSet} = nothing)
